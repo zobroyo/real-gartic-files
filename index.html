@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gartic Files — Classified</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--red:#ff2e2e;--cyan:#00f5ff;--purple:#9b00ff;--dark:#050508;--card-bg:rgba(5,5,12,0.92)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--dark);display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;overflow:hidden;color:white;position:relative}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.04) 1px,transparent 1px);background-size:40px 40px;animation:gridMove 20s linear infinite;z-index:0}
+@keyframes gridMove{0%{background-position:0 0}100%{background-position:40px 40px}}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);z-index:0;opacity:.35;animation:orbFloat 8s ease-in-out infinite alternate}
+.orb1{width:400px;height:400px;background:var(--purple);top:-100px;left:-100px}
+.orb2{width:350px;height:350px;background:var(--red);bottom:-80px;right:-80px;animation-delay:-4s}
+.orb3{width:250px;height:250px;background:var(--cyan);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.15;animation-delay:-2s}
+@keyframes orbFloat{from{transform:translate(0,0)}to{transform:translate(30px,30px)}}
+.vault{position:relative;z-index:10;width:min(92vw,500px);padding:50px 40px;background:var(--card-bg);border:1px solid rgba(0,245,255,0.15);border-radius:4px;backdrop-filter:blur(30px);text-align:center;box-shadow:0 0 0 1px rgba(0,245,255,0.05),0 0 80px rgba(155,0,255,0.25),inset 0 1px 0 rgba(255,255,255,0.05);animation:cardIn .8s cubic-bezier(.16,1,.3,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.vault::before,.vault::after{content:'';position:absolute;width:20px;height:20px;border-color:var(--cyan);border-style:solid}
+.vault::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.vault::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.scanline{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scan 3s ease-in-out infinite;opacity:.6}
+@keyframes scan{0%{top:0%;opacity:0}10%{opacity:.6}90%{opacity:.6}100%{top:100%;opacity:0}}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:.65rem;letter-spacing:3px;color:var(--red);border:1px solid var(--red);padding:4px 14px;border-radius:2px;margin-bottom:20px;animation:pulse-red 2s ease-in-out infinite}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 6px rgba(255,46,46,.4)}50%{box-shadow:0 0 18px rgba(255,46,46,.8)}}
+.badge::before{content:'●';animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,12vw,5.5rem);letter-spacing:6px;line-height:1;background:linear-gradient(135deg,#fff 0%,var(--cyan) 60%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(0,245,255,.3))}
+.subtitle{font-size:.7rem;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:8px}
+.divider{display:flex;align-items:center;gap:10px;margin:20px 0;opacity:.3}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--cyan))}
+.divider::after{transform:scaleX(-1)}
+.divider span{font-size:.6rem;letter-spacing:3px;white-space:nowrap;color:var(--cyan)}
+.clearance-row{display:flex;justify-content:center;gap:6px;margin-bottom:28px}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)}
+.dot.active{background:var(--cyan);box-shadow:0 0 10px var(--cyan);border-color:var(--cyan)}
+.btn-access{width:100%;padding:16px;background:transparent;border:1px solid var(--cyan);color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:.85rem;letter-spacing:4px;cursor:pointer;border-radius:2px;position:relative;overflow:hidden;transition:color .3s;text-transform:uppercase}
+.btn-access::before{content:'';position:absolute;inset:0;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;z-index:-1}
+.btn-access:hover{color:var(--dark)}
+.btn-access:hover::before{transform:scaleX(1)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{position:relative;width:min(90vw,420px);background:var(--card-bg);border:1px solid rgba(0,245,255,.2);border-radius:4px;padding:40px 35px;text-align:center;transform:scale(.92) translateY(20px);transition:transform .3s cubic-bezier(.16,1,.3,1);box-shadow:0 0 60px rgba(0,245,255,.1)}
+.modal-box::before{content:'';position:absolute;top:-1px;left:-1px;width:16px;height:16px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.modal-box::after{content:'';position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+.modal-overlay.open .modal-box{transform:scale(1) translateY(0)}
+.modal-icon{font-size:2rem;margin-bottom:10px}
+.modal-title{font-family:'Orbitron',monospace;font-size:.9rem;letter-spacing:3px;color:var(--cyan);margin-bottom:24px}
+.input-group{position:relative;margin-bottom:10px}
+.input-group input{width:100%;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.2);border-radius:2px;padding:14px 16px;color:white;font-family:'Share Tech Mono',monospace;font-size:1rem;letter-spacing:4px;outline:none;transition:border-color .3s,box-shadow .3s}
+.input-group input:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,245,255,.15)}
+.input-group input::placeholder{letter-spacing:2px;opacity:.3;font-size:.75rem}
+.input-group input.error{border-color:var(--red);box-shadow:0 0 20px rgba(255,46,46,.2);animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.err-text{font-size:.7rem;color:var(--red);letter-spacing:2px;height:18px;margin-bottom:16px;opacity:0;transition:opacity .3s}
+.err-text.show{opacity:1}
+.btn-unlock{width:100%;padding:14px;background:linear-gradient(135deg,var(--purple),var(--cyan));border:none;border-radius:2px;color:white;font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;letter-spacing:3px;cursor:pointer;transition:opacity .3s,transform .2s,box-shadow .3s;text-transform:uppercase}
+.btn-unlock:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 8px 30px rgba(155,0,255,.4)}
+.btn-close-modal{position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(255,255,255,.3);font-size:1.2rem;cursor:pointer;transition:color .2s;font-family:monospace}
+.btn-close-modal:hover{color:white}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="vault">
+  <div class="scanline"></div>
+  <div class="badge">TOP SECRET</div>
+  <h1 class="title">GARTIC<br>FILES</h1>
+  <p class="subtitle">EYES ONLY · LEVEL 5 CLEARANCE · AUTHORIZED PERSONNEL</p>
+  <div class="divider"><span>SECURITY PROTOCOL ACTIVE</span></div>
+  <div class="clearance-row">
+    <div class="dot active"></div>
+    <div class="dot active"></div>
+    <div class="dot active"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+  </div>
+  <button class="btn-access" onclick="openModal()">⬡ ACCESS SECURE VAULT</button>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <button class="btn-close-modal" onclick="closeModal()">✕</button>
+    <div class="modal-icon">🔐</div>
+    <div class="modal-title">SECURITY CLEARANCE</div>
+    <div class="input-group">
+      <input type="password" id="codeInput" placeholder="ENTER ACCESS CODE" autocomplete="off">
+    </div>
+    <div class="err-text" id="errText">⚠ ACCESS DENIED — INVALID CODE</div>
+    <button class="btn-unlock" onclick="checkCode()">UNLOCK VAULT</button>
+  </div>
+</div>
+
+<script>
+const correctPassword = "gartic123";
+function openModal(){document.getElementById('modal').classList.add('open');setTimeout(()=>document.getElementById('codeInput').focus(),300)}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.getElementById('codeInput').value='';document.getElementById('errText').classList.remove('show');document.getElementById('codeInput').classList.remove('error')}
+function checkCode(){const v=document.getElementById('codeInput').value,e=document.getElementById('errText'),i=document.getElementById('codeInput');if(v===correctPassword){window.location.href="gartic-files.pdf"}else{i.classList.remove('error');void i.offsetWidth;i.classList.add('error');e.classList.add('show')}}
+document.getElementById('codeInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkCode()});
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+</script>
+</body>
+</html>
